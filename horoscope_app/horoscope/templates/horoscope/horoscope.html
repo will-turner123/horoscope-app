@@ -1,0 +1,34 @@
+{% extends "horoscope/base.html" %}
+{% block content %}
+    <div class="content-section">
+        <div class="jumbotron mt-3 text-center">
+            <h1 class="display-3">{{ timeframe }}'s Horoscope</h1>
+            <h2 class="display-4">{{ sign }}</h2>
+            <p class="small"><em>{{ date_range }}</em></p>
+            <hr class="my-4">
+            <p class="lead">{{ description }}</p>
+            <p>Feeling: {{ mood }}</p>
+            {% if timeframe == "Yesterday" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/today">Today's Horoscope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/tomorrow">Tomorrow's Horoscope</a>
+            {% endif %}
+            {% if timeframe == "Tomorrow" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/today">Today's Horsocope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/yesterday">Yesterday's Horoscope</a>
+            {% endif %}
+            {% if timeframe == "Today" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/yesterday">Yesterday's Horsocope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ sign|lower }}/tomorrow">Tomorrow's Horoscope</a>
+            {% endif %}
+        </div>
+        <ul class="list-group">
+            <!-- maybe make these h5/h6 ? -->
+            <li class="list-group-item"><i class="fas fa-dice mr-2"></i> {{ timeframe }}'s Lucky Number: <span class="horoscope-value"> {{ lucky_number }}</span></li>
+            <li class="list-group-item"><i class="fas fa-palette mr-2"></i> {{ timeframe }}'s Lucky Color: <span class="horoscope-value">{{ lucky_color }}</span></li>
+            <li class="list-group-item"><i class="far fa-clock mr-2"></i> {{ timeframe }}'s Lucky Time: <span class="horoscope-value">{{ lucky_time }}</span></li>
+            <li class="list-group-item"><i class="fas fa-user-friends mr-2"></i> {{ timeframe }}'s Compatability: <span class="horoscope-value">{{ compatibility }}</span></li>
+        </ul>
+    </div>
+
+
+{% endblock content %}

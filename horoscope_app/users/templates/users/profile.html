@@ -1,0 +1,83 @@
+{% extends "horoscope/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <div class="jumbotron mt-3 text-center">
+            <h1 class="display-3">{{ horoscope.timeframe|title }}'s Horoscope</h1>
+            <h2 class="display-4">{{ horoscope.sign }}</h2>
+            <p class="small"><em>{{ horoscope.date_range }}</em></p>
+            <hr class="my-4">
+            <p class="lead">{{ horoscope.description }}</p>
+            <p>Feeling: {{ horoscope.mood }}</p>
+            {% if horoscope.timeframe == "Yesterday" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/today">Today's Horoscope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/tomorrow">Tomorrow's Horoscope</a>
+            {% endif %}
+            {% if horoscope.timeframe == "Tomorrow" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/today">Today's Horsocope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/yesterday">Yesterday's Horoscope</a>
+            {% endif %}
+            {% if horoscope.timeframe == "Today" %}
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/yesterday">Yesterday's Horsocope</a>
+                <a class="btn btn-outline-primary m-2" href="../{{ horoscope.sign|lower }}/tomorrow">Tomorrow's Horoscope</a>
+            {% else %}
+                <a class="btn btn-outline-primary m-2" href="../horoscope/{{ horoscope.sign|lower }}/yesterday">Yesterday's Horsocope</a>
+                <a class="btn btn-outline-primary m-2" href="../horoscope/{{ horoscope.sign|lower }}/tomorrow">Tomorrow's Horoscope</a>
+            {% endif %}
+        </div>
+        <ul class="list-group">
+            <!-- maybe make these h5/h6 ? -->
+            <li class="list-group-item"><i class="fas fa-dice mr-2"></i> {{ horoscope.timeframe|title }}'s Lucky Number: <span class="horoscope-value"> {{ horoscope.lucky_number }}</span></li>
+            <li class="list-group-item"><i class="fas fa-palette mr-2"></i> {{ horoscope.timeframe|title }}'s Lucky Color: <span class="horoscope-value">{{ horoscope.lucky_color }}</span></li>
+            <li class="list-group-item"><i class="far fa-clock mr-2"></i> {{ horoscope.timeframe|title }}'s Lucky Time: <span class="horoscope-value">{{ horoscope.lucky_time }}</span></li>
+            <li class="list-group-item"><i class="fas fa-user-friends mr-2"></i> {{ horoscope.timeframe|title }}'s Compatability: <span class="horoscope-value">{{ horoscope.compatibility }}</span></li>
+        </ul>
+        <div class="row mt-5">
+            {% for item in signs %}
+            <div class="col-md-3 col-sm-6 mb-2">
+                <div class="horoscope-item text-center">
+                    <a href="{% url 'horoscope-horoscope' sign=item timeframe='today' %}">
+                        <img class="mx-auto d-block horoscope-icon" src="../media/{{ item|title }}.svg" alt="{{ item }}" style="max-width:250px;max-height:250px;">
+                        <h2 class="display-5">{{ item|title }}</h2>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card mb-3 text-center">
+                    <div class="card-body">
+                        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}" style="max-width:200px;max-height:200px;">
+                        <div class="media-body">
+                            <h2 class="account-heading">{{ user.username }}</h2>
+                            <p class="text-secondary">{{ user.email }}</p>
+                            <p class="text-secondary">{{ user.profile.birthday }}</p>
+                            <p class="text-secondary">{{ user.profile.sign|title }}</p>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4">Update Profile</legend>
+                                {{ u_form|crispy }}
+                                {{ p_form|crispy }}
+                                {{ b_form|crispy }}
+                            </fieldset>
+                            <div class="form-group">
+                                <button class="btn btn-outline-info" type="submit">Update Profile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+{% endblock content %}

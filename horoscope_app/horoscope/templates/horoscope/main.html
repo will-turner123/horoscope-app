@@ -1,0 +1,9 @@
+{% extends "horoscope/base.html" %}
+{% block content %}
+<h1>Main!</h1>
+{% if user.is_authenticated %}}
+    <h1>auth</h1>
+{% else %}
+    <h2>false</h2>
+{% endif %}
+{% endblock content %}

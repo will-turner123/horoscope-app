@@ -1,0 +1,97 @@
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/f43b383d96.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.min.css">
+    <link rel="stylsheet" type="text/css" href="{% static 'horoscope/main.css' %}">
+
+    <title>Daily Horoscope | Join Now!</title>
+  </head>
+  <body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="#">Daily Horoscope</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                    <a class="nav-item nav-link" href="{% url 'horoscope-home' %}">Home</a>
+                    <a class="nav-item nav-link" href="#">About</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                      {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'profile' %}">Hey, {{ user.username }}!</a>
+                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                      {% else %}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                      {% endif %}
+                    </div>
+                </div>
+                        
+            </div>
+        </nav>
+    </header>
+
+    <!--start -->
+
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Daily Horoscope</h1>
+        <h3 class="lead">Join now for your daily horoscope!</h3>
+        <hr class="my-5 bg-secondary" style="width:75%;">
+        <a class="btn btn-primary m-3 btn-lg" href="{% url 'register' %}">Sign Up</a>
+        <a class="btn btn-outline-primary m-3 btn-lg" href="{% url 'login' %}">Log In</a>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for item in signs %}
+            <div class="col-md-3 col-sm-6 mb-2">
+                <div class="horoscope-item text-center">
+                    <a href="{% url 'horoscope-horoscope' sign=item timeframe='today' %}">
+                        <img class="mx-auto d-block horoscope-icon" src="/media/{{ item|title }}.svg" alt="{{ item }}" style="max-width:250px;max-height:250px;">
+                        <h2 class="display-5">{{ item|title }}</h2>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- end -->
+
+    <div class="container">
+      <footer class="pt-4 my-md-5 border-top text-center">
+        <p><a href="https://willturner.tech">Made by Will Turner</a></p>
+        <p><a href="https://github.com/will-turner123/horoscope-app">View on GitHub</a></p>
+      </footer>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
+{% endblock content %}
